@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-MusicsellingApplication<musicselling>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "musicstore.musicselling.MusicsellingApplication",
+      "projectName": "musicselling",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
