@@ -23,7 +23,7 @@ public class Artist {
     private String artistName;
     private String artistBio;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "artist_song", joinColumns = {
             @JoinColumn(name = "artist_id", referencedColumnName = "artistId") }, inverseJoinColumns = {
                     @JoinColumn(name = "song_id", referencedColumnName = "songId") })

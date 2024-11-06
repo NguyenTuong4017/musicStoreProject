@@ -1,7 +1,10 @@
 package musicstore.musicselling.Controller;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,17 @@ public class SongController {
     @Autowired
     private ArtistRepository artistRepository;
 
+    public static String covertToString(String value) {
+        try {
+            String temp = Normalizer.normalize(value, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping("/song-list")
     public String showAllSong(Model model) {
         List<Song> songList = songRepository.findAll();
@@ -32,12 +46,20 @@ public class SongController {
 
     }
 
-    @PostMapping("/song-by-artist")
-    public String findSongByArtistName(Model model, String name) {
-        Artist artist = artistRepository.findByArtistName(name);
-        Set<Song> songList = artist.getSongs();
-        model.addAttribute("songList", songList);
-        return "/song-of-artist";
+    @PostMapping("/find")
+    public String searchResult(Model model, String searchString) {
+        List<Song> songList = songRepository.findByArtists_ArtistNameContainingIgnoreCase(searchString);
+        if (!songList.isEmpty()) {
+            model.addAttribute("songList", songList);
+            return "search-result";
+        }
+        List<Song> songList2 = songRepository.findBySongNameContaining(searchString);
+        if (!songList2.isEmpty()) {
+            model.addAttribute("songList", songList2);
+            return "search-result";
+        }
+        model.addAttribute("message", "No result.");
+        return "error";
 
     }
 
