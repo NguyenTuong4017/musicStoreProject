@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +25,8 @@ public class Song {
     private String songName;
     private long songStream;
     private String songImage;
+    private float songPrice;
+    private int song_order;
 
     @ManyToMany(mappedBy = "songs", fetch = FetchType.LAZY)
     private Set<Artist> artists = new HashSet<>();
@@ -34,14 +37,18 @@ public class Song {
                     @JoinColumn(name = "genre_id", referencedColumnName = "genreId") })
     private Set<Genre> genres = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id")
+    private Album album;
+
     public Song() {
 
     }
 
-    public Song(String songName, long songStream, String songImage) {
+    public Song(String songName, long songStream, String songImage, float songPrice) {
         this.songName = songName;
         this.songStream = songStream;
-
+        this.songPrice = songPrice;
         this.songImage = songImage;
     }
 
@@ -90,10 +97,42 @@ public class Song {
         genre.getSongs().add(this);
     }
 
+    public float getSongPrice() {
+        return songPrice;
+    }
+
+    public void setSongPrice(float songPrice) {
+        this.songPrice = songPrice;
+    }
+
+    public String formatPrice(float songPrice) {
+        return "€" + songPrice;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    public int getSong_order() {
+        return song_order;
+    }
+
+    public void setSong_order(int song_order) {
+        this.song_order = song_order;
+    }
+
     public String getArtistName() {
         return artists.stream()
                 .map(artist -> artist.getArtistName()) // Convert each Artist to their name
                 .collect(Collectors.joining(", ")); // Join names with commas
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
 }

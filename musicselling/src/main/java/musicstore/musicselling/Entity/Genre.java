@@ -43,4 +43,8 @@ public class Genre {
         return this.songs;
     }
 
+    public long getGenreId() {
+        return genreId;
+    }
+
 }

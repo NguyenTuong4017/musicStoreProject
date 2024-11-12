@@ -9,10 +9,47 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+
     <title>Song List</title>
+
+    <style>
+      .svg-container {
+        display: inline-block;
+        cursor: pointer;
+      }
+      .svg-container svg {
+        fill: grey; /* Default fill color */
+        transition: filter 0.3s ease; /* Smooth transition for the filter property */
+      }
+      .svg-container:hover svg {
+        filter: brightness(150%); /* Increase brightness by 150% on hover */
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .content {
+        flex: 1 0 auto;
+      }
+
+      .footer {
+        flex-shrink: 0;
+      }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary mb-5 bg-dark"
+      data-bs-theme="dark"
+    >
       <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/song-list}">
           <img src="/static/logo.png" alt="Bootstrap" width="70" height="70" />
@@ -39,7 +76,7 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" th:href="@{/album}">Album/EP</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -49,14 +86,31 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Dropdown
+                Genres
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                <li th:each="genre: ${genreList}">
+                  <form style="display: inline" th:action="@{/song-genre}">
+                    <input
+                      type="hidden"
+                      name="genreId"
+                      th:value="${genre.genreId}"
+                    />
+                    <button
+                      type="submit"
+                      class="dropdown-item"
+                      style="
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        margin: 0;
+                        color: inherit;
+                        cursor: pointer;
+                      "
+                    >
+                      <a class="dropdown-item" th:text="${genre.genreName}"></a>
+                    </button>
+                  </form>
                 </li>
               </ul>
             </li>
@@ -64,6 +118,21 @@
               <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
+          <div style="margin-right: 1rem" class="svg-container">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="35"
+              height="35"
+              fill="grey"
+              class="bi bi-cart2"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"
+              />
+            </svg>
+          </div>
+
           <form class="d-flex" role="search" th:action="@{/find}" method="post">
             <input
               class="form-control me-2"
@@ -72,15 +141,15 @@
               aria-label="Search"
               name="searchString"
             />
-            <button class="btn btn-outline-success" type="submit">
+            <button class="btn btn-outline-primary" type="submit">
               Search
             </button>
           </form>
         </div>
       </div>
     </nav>
-    <div class="container text-center">
-      <div class="row row-cols-10">
+    <div class="container text-center content">
+      <div class="row row-cols-md-4 g-4">
         <div th:each="song: ${songList}" class="col">
           <div class="card" style="width: 18rem">
             <img
@@ -98,13 +167,81 @@
                   text-overflow: ellipsis;
                 "
               ></h5>
-              <p class="card-text" th:text="${song.getArtistName()}"></p>
+              <p
+                class="card-text"
+                th:text="${song.getArtistName()}"
+                style="
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              ></p>
+              <p th:text="${song.formatPrice(song.songPrice)}"></p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <footer class="footer bg-dark text-center text-lg-start text-white mt-5">
+      <div class="container p-4">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Footer Content</h5>
+            <p>
+              Here you can use rows and columns to organize your footer content.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 3</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 4</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 3</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 4</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2024 Company Name:
+        <a class="text-white" href="https://yourwebsite.com/"
+          >yourwebsite.com</a
+        >
+      </div>
+    </footer>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

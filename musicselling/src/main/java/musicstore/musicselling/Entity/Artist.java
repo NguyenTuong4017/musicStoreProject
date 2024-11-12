@@ -1,7 +1,9 @@
 package musicstore.musicselling.Entity;
 
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -12,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +25,9 @@ public class Artist {
     private Long artistId;
     private String artistName;
     private String artistBio;
+
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<Album> albums = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "artist_song", joinColumns = {
@@ -62,6 +68,14 @@ public class Artist {
         return songs;
     }
 
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
 
@@ -72,4 +86,8 @@ public class Artist {
         song.getArtists().add(this);
     }
 
+    public void addAlbum(Album album) {
+        this.albums.add(album);
+        album.setArtist(this);
+    }
 }
