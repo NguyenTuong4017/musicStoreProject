@@ -148,34 +148,48 @@
         </div>
       </div>
     </nav>
-    <div class="container text-center content">
-      <div class="row row-cols-md-4 g-4">
-        <div th:each="song: ${songList}" class="col">
-          <div class="card" style="width: 18rem">
-            <form style="display: inline" th:action="@{/song-page}">
-              <input type="hidden" name="songId" th:value="${song.songId}" />
-              <button
-                type="submit"
-                style="
-                  background: none;
-                  border: none;
-                  padding: 0;
-                  margin: 0;
-                  color: inherit;
-                  cursor: pointer;
-                "
-              >
-                <img
-                  th:src="@{${song.songImage}}"
-                  class="card-img-top"
-                  alt="song-image"
-                />
-              </button>
-            </form>
 
-            <div class="card-body">
+    <div class="container text-center content">
+      <div class="row">
+        <div class="col-md-4">
+          <img th:src="${song.songImage}" class="img-fluid" alt="Song Cover" />
+        </div>
+        <div class="col-md-8">
+          <h1 th:text="${song.songName}"></h1>
+          <h3 th:text="${song.getArtistName()}"></h3>
+          <p>
+            Genre:
+            <strong th:text="${song.genreList()}"></strong>
+          </p>
+          <p>
+            Price:
+            <strong th:text="${song.formatPrice(song.songPrice)}"></strong>
+          </p>
+
+          <div class="mt-4">
+            <audio controls>
+              <source src="song.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+
+          <div class="mt-4">
+            <button class="btn btn-primary">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <h2>More By <span th:text="${artist.artistName}"></span></h2>
+        <div class="row">
+          <div class="col-6 col-md-3 mb-4" th:each="otherSong: ${otherSongs}">
+            <div class="card h-100">
               <form style="display: inline" th:action="@{/song-page}">
-                <input type="hidden" name="songId" th:value="${song.songId}" />
+                <input
+                  type="hidden"
+                  name="songId"
+                  th:value="${otherSong.songId}"
+                />
                 <button
                   type="submit"
                   style="
@@ -189,29 +203,38 @@
                     display: block;
                   "
                 >
-                  <h5
-                    th:text="${song.songName}"
-                    class="card-title"
-                    style="
-                      white-space: nowrap;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                    "
-                  ></h5>
+                  <img
+                    th:src="${otherSong.songImage}"
+                    class="card-img-top"
+                    alt="Song Cover"
+                  />
                 </button>
               </form>
 
-              <p
-                class="card-text"
-                th:text="${song.getArtistName()}"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></p>
-              <p th:text="${song.formatPrice(song.songPrice)}"></p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <div class="card-body text-center">
+                <form style="display: inline" th:action="@{/song-page}">
+                  <input
+                    type="hidden"
+                    name="songId"
+                    th:value="${otherSong.songId}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: none;
+                      border: none;
+                      padding: 0;
+                      margin: 0;
+                      color: inherit;
+                      cursor: pointer;
+                      width: 100%;
+                      display: block;
+                    "
+                  >
+                    <p class="card-title" th:text="${otherSong.songName}"></p>
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
