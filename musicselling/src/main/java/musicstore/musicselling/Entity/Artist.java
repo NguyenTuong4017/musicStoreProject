@@ -35,6 +35,13 @@ public class Artist {
                     @JoinColumn(name = "song_id", referencedColumnName = "songId") })
     private Set<Song> songs = new HashSet<>();
 
+    @ManyToMany(mappedBy = "featuredArtist")
+    private Set<Song> featuredInSongs = new HashSet<>();
+
+    public Set<Song> getFeaturedInSongs() {
+        return featuredInSongs;
+    }
+
     public Artist() {
 
     }
@@ -90,4 +97,9 @@ public class Artist {
         this.albums.add(album);
         album.setArtist(this);
     }
+
+    public void setFeaturedInSongs(Set<Song> featuredInSongs) {
+        this.featuredInSongs = featuredInSongs;
+    }
+
 }

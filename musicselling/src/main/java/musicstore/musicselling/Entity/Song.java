@@ -1,8 +1,11 @@
 package musicstore.musicselling.Entity;
 
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -36,6 +39,10 @@ public class Song {
             @JoinColumn(name = "song_id", referencedColumnName = "songId") }, inverseJoinColumns = {
                     @JoinColumn(name = "genre_id", referencedColumnName = "genreId") })
     private Set<Genre> genres = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(name = "song_featured_artist", joinColumns = @JoinColumn(name = "song_id"), inverseJoinColumns = @JoinColumn(name = "featured_artist_id"))
+    private Set<Artist> featuredArtist = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
@@ -133,6 +140,25 @@ public class Song {
 
     public void setGenres(Set<Genre> genres) {
         this.genres = genres;
+    }
+
+    public Set<Artist> getFeaturedArtist() {
+        return featuredArtist;
+    }
+
+    public void setFeaturedArtist(Set<Artist> featuredArtist) {
+        this.featuredArtist = featuredArtist;
+    }
+
+    public void addFeaturedArtist(Artist artist) {
+        this.featuredArtist.add(artist);
+        artist.getFeaturedInSongs().add(this);
+    }
+
+    public String genreList() {
+        return this.genres.stream()
+                .map(genre -> genre.getGenreName())
+                .collect(Collectors.joining(", "));
     }
 
 }

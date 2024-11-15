@@ -150,21 +150,55 @@
       <div class="row row-cols-md-4 g-4">
         <div th:each="song: ${songList}" class="col">
           <div class="card" style="width: 18rem">
-            <img
-              th:src="@{${song.songImage}}"
-              class="card-img-top"
-              alt="song-image"
-            />
-            <div class="card-body">
-              <h5
-                th:text="${song.songName}"
-                class="card-title"
+            <form style="display: inline" th:action="@{/song-page}">
+              <input type="hidden" name="songId" th:value="${song.songId}" />
+              <button
+                type="submit"
                 style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
+                  background: none;
+                  border: none;
+                  padding: 0;
+                  margin: 0;
+                  color: inherit;
+                  cursor: pointer;
                 "
-              ></h5>
+              >
+                <img
+                  th:src="@{${song.songImage}}"
+                  class="card-img-top"
+                  alt="song-image"
+                />
+              </button>
+            </form>
+
+            <div class="card-body">
+              <form style="display: inline" th:action="@{/song-page}">
+                <input type="hidden" name="songId" th:value="${song.songId}" />
+                <button
+                  type="submit"
+                  style="
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    color: inherit;
+                    cursor: pointer;
+                    width: 100%;
+                    display: block;
+                  "
+                >
+                  <h5
+                    th:text="${song.songName}"
+                    class="card-title"
+                    style="
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    "
+                  ></h5>
+                </button>
+              </form>
+
               <p
                 class="card-text"
                 th:text="${song.getArtistName()}"
