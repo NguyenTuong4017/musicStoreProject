@@ -18,11 +18,11 @@
         cursor: pointer;
       }
       .svg-container svg {
-        fill: grey;
-        transition: filter 0.3s ease;
+        fill: grey; /* Default fill color */
+        transition: filter 0.3s ease; /* Smooth transition for the filter property */
       }
       .svg-container:hover svg {
-        filter: brightness(150%);
+        filter: brightness(150%); /* Increase brightness by 150% on hover */
       }
 
       html,
@@ -68,11 +68,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                th:href="@{/song-list}"
-                >Home</a
+              <a class="nav-link" aria-current="page" th:href="@{/song-list}"
+                >Songs</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" th:href="@{/artist}"
+                >Artists</a
               >
             </li>
             <li class="nav-item">

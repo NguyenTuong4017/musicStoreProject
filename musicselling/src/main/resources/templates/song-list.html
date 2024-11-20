@@ -18,11 +18,11 @@
         cursor: pointer;
       }
       .svg-container svg {
-        fill: grey;
-        transition: filter 0.3s ease;
+        fill: grey; /* Default fill color */
+        transition: filter 0.3s ease; /* Smooth transition for the filter property */
       }
       .svg-container:hover svg {
-        filter: brightness(150%);
+        filter: brightness(150%); /* Increase brightness by 150% on hover */
       }
 
       html,
@@ -42,6 +42,17 @@
 
       .footer {
         flex-shrink: 0;
+      }
+      .custom-link {
+        color: #007bff; /* Bootstrap primary color */
+        text-decoration: none; /* No underline by default */
+        transition: all 0.3s ease; /* Smooth transition for color and text-decoration */
+      }
+
+      .custom-link:hover,
+      .custom-link:focus {
+        color: #0056b3; /* Darker shade for hover effect, adjust as needed */
+        text-decoration: underline; /* Underline on hover */
       }
     </style>
   </head>
@@ -68,11 +79,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                th:href="@{/song-list}"
-                >Home</a
+              <a class="nav-link" aria-current="page" th:href="@{/song-list}"
+                >Songs</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" th:href="@{/artist}"
+                >Artists</a
               >
             </li>
             <li class="nav-item">
@@ -210,6 +223,7 @@
                   text-overflow: ellipsis;
                 "
               ></p>
+
               <p th:text="${song.formatPrice(song.songPrice)}"></p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>

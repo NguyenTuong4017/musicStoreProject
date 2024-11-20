@@ -2,7 +2,6 @@ package musicstore.musicselling;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -43,16 +42,25 @@ public class MusicsellingApplication {
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
 			// create artists
-			Artist song_tung_mtp = new Artist("Sơn Tùng M-TP", "Vietnamese singer-songwriter and actor.");
-			Artist tlinh = new Artist("tlinh", "tlinh is a Vietnamese independent singer and rapper.");
-			Artist rpt_mck = new Artist("RPT MCK", "RPT MCK is a Vietnamese singer and rapper based in Ha Noi.");
-			Artist wxrdie = new Artist("Wxrdie", "Wxrdie is a Vietnamese rapper based in Ha Noi.");
+			Artist song_tung_mtp = new Artist("Sơn Tùng M-TP", "Vietnamese singer-songwriter and actor.",
+					"/static/artist-image/son-tung.jpeg");
+			Artist tlinh = new Artist("tlinh", "tlinh is a Vietnamese independent singer and rapper.",
+					"/static/artist-image/tlinh.jpeg");
+			Artist rpt_mck = new Artist("RPT MCK", "RPT MCK is a Vietnamese singer and rapper based in Ha Noi.",
+					"/static/artist-image/rpt-mck.jpeg");
+			Artist wxrdie = new Artist("Wxrdie", "Wxrdie is a Vietnamese rapper based in Ha Noi.",
+					"/static/artist-image/wxrdie.jpeg");
 			Artist andree_right_hand = new Artist("Andree Right Hand",
-					"Andree Right Hand is a Vietnamese rapper and businessman based in Ho Chi Minh city.");
-			Artist amee = new Artist("AMEE", "AMEE is a Vietnamese singer based in Ho Chi Minh city.");
-			Artist binh_gold = new Artist("Bình Gold", "Bình Gold is a Vietnamese rapper based in Ha Noi.");
-			Artist two_pillz = new Artist("2pillz", "2pillz is a music producer and DJ based in Ho Chi Minh city");
-			Artist wokeup = new Artist("WOKEUP", "WOKEUP is a music producer and DJ based in Ho Chi Minh city");
+					"Andree Right Hand is a Vietnamese rapper and businessman based in Ho Chi Minh city.",
+					"/static/artist-image/andree-right-hand.jpeg");
+			Artist amee = new Artist("AMEE", "AMEE is a Vietnamese singer based in Ho Chi Minh city.",
+					"/static/artist-image/amee.jpeg");
+			Artist binh_gold = new Artist("Bình Gold", "Bình Gold is a Vietnamese rapper based in Ha Noi.",
+					"/static/artist-image/binh-gold.jpeg");
+			Artist two_pillz = new Artist("2pillz", "2pillz is a music producer and DJ based in Ho Chi Minh city",
+					"/static/artist-image/2pillz.jpeg");
+			Artist wokeup = new Artist("WOKEUP", "WOKEUP is a music producer and DJ based in Ho Chi Minh city",
+					"/static/artist-image/wokeup.jpeg");
 
 			// create songs
 
@@ -69,7 +77,7 @@ public class MusicsellingApplication {
 					2.99f);
 			Song nhung_dom_sang = new Song("những đốm sáng", 4078994, "/static/song-image/neu-luc-do.jpg", 2.99f);
 			Song nu_sieu_anh_hung = new Song("nữ siêu anh hùng", 2471825, "/static/song-image/neu-luc-do.jpg", 2.99f);
-			Song ghe_iu_dau_cua_em_oi = new Song("ghế iu dấu của em ơi", 4165388, "/static/song-image/neu-luc-do.jpg",
+			Song ghe_iu_dau_cua_em_oi = new Song("ghệ iu dấu của em ơi", 4165388, "/static/song-image/neu-luc-do.jpg",
 					2.99f);
 			Song neu_luc_do = new Song("nếu lúc đó", 2357101, "/static/song-image/neu-luc-do.jpg", 2.99f);
 			Song ket_thuc_mo_dau = new Song("kết thúc = mở đầu", 1725881, "/static/song-image/neu-luc-do.jpg", 2.99f);
@@ -111,9 +119,9 @@ public class MusicsellingApplication {
 			Album ai_album = new Album("ái", "/static/song-image/neu-luc-do.jpg", 12.99f);
 
 			// save genre
-			genreRepository.save(pop);
-			genreRepository.save(rnb);
-			genreRepository.save(hiphopRap);
+			// genreRepository.save(pop);
+			// genreRepository.save(rnb);
+			// genreRepository.save(hiphopRap);
 
 			// add genre to song
 			tinh_yeu_co_nghia_la_gi.addGenres(pop);
@@ -180,33 +188,33 @@ public class MusicsellingApplication {
 			beautiful_nightmare.addGenres(pop);
 
 			// save songs
-			songRepository.save(tinh_yeu_co_nghia_la_gi);
-			songRepository.save(nguoi_dep_ngu);
-			songRepository.save(nguoi_dien);
-			songRepository.save(kho_bau_danh_roi);
-			songRepository.save(ai);
-			songRepository.save(lam_lanh_chua_tinh);
-			songRepository.save(the_gioi_than_tien);
-			songRepository.save(nhung_dom_sang);
-			songRepository.save(nu_sieu_anh_hung);
-			songRepository.save(ghe_iu_dau_cua_em_oi);
-			songRepository.save(neu_luc_do);
-			songRepository.save(ket_thuc_mo_dau);
+			// songRepository.save(tinh_yeu_co_nghia_la_gi);
+			// songRepository.save(nguoi_dep_ngu);
+			// songRepository.save(nguoi_dien);
+			// songRepository.save(kho_bau_danh_roi);
+			// songRepository.save(ai);
+			// songRepository.save(lam_lanh_chua_tinh);
+			// songRepository.save(the_gioi_than_tien);
+			// songRepository.save(nhung_dom_sang);
+			// songRepository.save(nu_sieu_anh_hung);
+			// songRepository.save(ghe_iu_dau_cua_em_oi);
+			// songRepository.save(neu_luc_do);
+			// songRepository.save(ket_thuc_mo_dau);
 
-			songRepository.save(mong_yu);
-			songRepository.save(cuoc_goi_luc_nua_dem);
-			songRepository.save(beautiful_nightmare);
-			songRepository.save(mien_mong_mi);
-			songRepository.save(hai_nghin_cau_hoi_vi_sao);
+			// songRepository.save(mong_yu);
+			// songRepository.save(cuoc_goi_luc_nua_dem);
+			// songRepository.save(beautiful_nightmare);
+			// songRepository.save(mien_mong_mi);
+			// songRepository.save(hai_nghin_cau_hoi_vi_sao);
 
-			songRepository.save(chay_ngay_di);
-			songRepository.save(hay_trao_cho_anh);
+			// songRepository.save(chay_ngay_di);
+			// songRepository.save(hay_trao_cho_anh);
 
-			songRepository.save(chi_mot_dem_nua_thoi);
-			songRepository.save(em_la_chau_bau);
+			// songRepository.save(chi_mot_dem_nua_thoi);
+			// songRepository.save(em_la_chau_bau);
 
-			songRepository.save(nhac_anh);
-			songRepository.save(em_iu);
+			// songRepository.save(nhac_anh);
+			// songRepository.save(em_iu);
 
 			// add songs to album
 			mongMee.addSong(mong_yu);
@@ -241,8 +249,8 @@ public class MusicsellingApplication {
 			tlinh.addSong(ghe_iu_dau_cua_em_oi);
 			tlinh.addSong(neu_luc_do);
 			tlinh.addSong(ket_thuc_mo_dau);
-
 			tlinh.addSong(em_la_chau_bau);
+			tlinh.addSong(chi_mot_dem_nua_thoi);
 
 			rpt_mck.addSong(chi_mot_dem_nua_thoi);
 			rpt_mck.addSong(em_la_chau_bau);
@@ -250,6 +258,9 @@ public class MusicsellingApplication {
 
 			song_tung_mtp.addSong(chay_ngay_di);
 			song_tung_mtp.addSong(hay_trao_cho_anh);
+
+			wxrdie.addSong(em_iu);
+			wxrdie.addSong(nhac_anh);
 
 			andree_right_hand.addSong(nhac_anh);
 			andree_right_hand.addSong(em_iu);
@@ -260,62 +271,61 @@ public class MusicsellingApplication {
 			amee.addSong(cuoc_goi_luc_nua_dem);
 			amee.addSong(beautiful_nightmare);
 
+			binh_gold.addSong(em_iu);
+
 			two_pillz.addSong(neu_luc_do);
+			two_pillz.addSong(ghe_iu_dau_cua_em_oi);
+			two_pillz.addSong(em_iu);
 
 			wokeup.addSong(ghe_iu_dau_cua_em_oi);
 
-			// add feature artist to song
-			chi_mot_dem_nua_thoi.addFeaturedArtist(tlinh);
-
-			em_iu.addFeaturedArtist(wxrdie);
-			em_iu.addFeaturedArtist(binh_gold);
-			em_iu.addFeaturedArtist(two_pillz);
 			// save artist
-			artistRepository.save(song_tung_mtp);
-			artistRepository.save(tlinh);
-			artistRepository.save(rpt_mck);
-			artistRepository.save(wxrdie);
-			artistRepository.save(andree_right_hand);
-			artistRepository.save(amee);
-			artistRepository.save(binh_gold);
-			artistRepository.save(two_pillz);
+			// artistRepository.save(song_tung_mtp);
+			// artistRepository.save(tlinh);
+			// artistRepository.save(rpt_mck);
+			// artistRepository.save(wxrdie);
+			// artistRepository.save(andree_right_hand);
+			// artistRepository.save(amee);
+			// artistRepository.save(binh_gold);
+			// artistRepository.save(two_pillz);
+			// artistRepository.save(wokeup);
 
 			// add albums to artist
 			amee.addAlbum(mongMee);
 			tlinh.addAlbum(ai_album);
 
 			// save album
-			albumRepository.save(mongMee);
-			albumRepository.save(ai_album);
+			// albumRepository.save(mongMee);
+			// albumRepository.save(ai_album);
 
 			// save songs again to link with album
-			songRepository.save(tinh_yeu_co_nghia_la_gi);
-			songRepository.save(nguoi_dep_ngu);
-			songRepository.save(nguoi_dien);
-			songRepository.save(kho_bau_danh_roi);
-			songRepository.save(ai);
-			songRepository.save(lam_lanh_chua_tinh);
-			songRepository.save(the_gioi_than_tien);
-			songRepository.save(nhung_dom_sang);
-			songRepository.save(nu_sieu_anh_hung);
-			songRepository.save(ghe_iu_dau_cua_em_oi);
-			songRepository.save(neu_luc_do);
-			songRepository.save(ket_thuc_mo_dau);
+			// songRepository.save(tinh_yeu_co_nghia_la_gi);
+			// songRepository.save(nguoi_dep_ngu);
+			// songRepository.save(nguoi_dien);
+			// songRepository.save(kho_bau_danh_roi);
+			// songRepository.save(ai);
+			// songRepository.save(lam_lanh_chua_tinh);
+			// songRepository.save(the_gioi_than_tien);
+			// songRepository.save(nhung_dom_sang);
+			// songRepository.save(nu_sieu_anh_hung);
+			// songRepository.save(ghe_iu_dau_cua_em_oi);
+			// songRepository.save(neu_luc_do);
+			// songRepository.save(ket_thuc_mo_dau);
 
-			songRepository.save(mong_yu);
-			songRepository.save(cuoc_goi_luc_nua_dem);
-			songRepository.save(beautiful_nightmare);
-			songRepository.save(mien_mong_mi);
-			songRepository.save(hai_nghin_cau_hoi_vi_sao);
+			// songRepository.save(mong_yu);
+			// songRepository.save(cuoc_goi_luc_nua_dem);
+			// songRepository.save(beautiful_nightmare);
+			// songRepository.save(mien_mong_mi);
+			// songRepository.save(hai_nghin_cau_hoi_vi_sao);
 
-			songRepository.save(chay_ngay_di);
-			songRepository.save(hay_trao_cho_anh);
+			// songRepository.save(chay_ngay_di);
+			// songRepository.save(hay_trao_cho_anh);
 
-			songRepository.save(chi_mot_dem_nua_thoi);
-			songRepository.save(em_la_chau_bau);
+			// songRepository.save(chi_mot_dem_nua_thoi);
+			// songRepository.save(em_la_chau_bau);
 
-			songRepository.save(nhac_anh);
-			songRepository.save(em_iu);
+			// songRepository.save(nhac_anh);
+			// songRepository.save(em_iu);
 
 		};
 	}

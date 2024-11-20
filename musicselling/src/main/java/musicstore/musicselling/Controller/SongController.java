@@ -52,6 +52,8 @@ public class SongController {
     public String showAllSong(Model model) {
         List<Song> songList = songRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
+        List<Artist> artistList = artistRepository.findAll();
+        model.addAttribute("artistList", artistList);
         model.addAttribute("songList", songList);
         model.addAttribute("genreList", genreList);
         return "song-list";
@@ -106,7 +108,6 @@ public class SongController {
     @GetMapping("/album/songs")
     public String showAllSongsOfAlbum(Model model, Long albumId) {
         Album album = albumRepository.findByAlbumId(albumId);
-        System.out.println(album.getAlbumName());
         List<Song> songList = album.getSongs();
         List<Genre> genreList = genreRepository.findAll();
 
@@ -120,29 +121,11 @@ public class SongController {
     @GetMapping("/song-page")
     public String songPage(Model model, Long songId) {
         List<Genre> genreList = genreRepository.findAll();
-        List<Song> otherSongs = new ArrayList<>();
-        Artist artist = new Artist();
-        Song song = songRepository.findBySongId(songId);
-        Album album = song.getAlbum();
-        if (album != null) {
-            artist = album.getArtist();
-            System.out.println(artist.getArtistName());
-        } else {
-            String artistName = song.getArtistName();
-            System.out.println(artistName);
-            artist = artistRepository.findByArtistName(artistName);
-        }
 
-        for (Song refSong : artist.getSongs()) {
-            if (!refSong.getSongId().equals(songId)) {
-                otherSongs.add(refSong);
-            }
-        }
+        Song song = songRepository.findBySongId(songId);
 
         model.addAttribute("song", song);
         model.addAttribute("genreList", genreList);
-        model.addAttribute("otherSongs", otherSongs);
-        model.addAttribute("artist", artist);
 
         return "song-page";
     }

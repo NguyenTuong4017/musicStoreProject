@@ -43,6 +43,17 @@
       .footer {
         flex-shrink: 0;
       }
+      .custom-link {
+        color: #007bff; /* Bootstrap primary color */
+        text-decoration: none; /* No underline by default */
+        transition: all 0.3s ease; /* Smooth transition for color and text-decoration */
+      }
+
+      .custom-link:hover,
+      .custom-link:focus {
+        color: #0056b3; /* Darker shade for hover effect, adjust as needed */
+        text-decoration: underline; /* Underline on hover */
+      }
     </style>
   </head>
   <body>
@@ -150,13 +161,16 @@
         </div>
       </div>
     </nav>
-
     <div class="container text-center content">
       <div class="row row-cols-md-4 g-4">
-        <div th:each="album: ${albumList}" class="col">
+        <div th:each="artist: ${artistList}" class="col">
           <div class="card" style="width: 18rem">
-            <form style="display: inline" th:action="@{/album/songs}">
-              <input type="hidden" name="albumId" th:value="${album.albumId}" />
+            <form style="display: inline" th:action="@{/artist/songs}">
+              <input
+                type="hidden"
+                name="artistId"
+                th:value="${artist.artistId}"
+              />
               <button
                 type="submit"
                 style="
@@ -169,35 +183,45 @@
                 "
               >
                 <img
-                  th:src="@{${album.albumImage}}"
+                  th:src="@{${artist.artistImage}}"
                   class="card-img-top"
-                  alt="song-image"
+                  alt="artist-image"
                 />
               </button>
             </form>
 
             <div class="card-body">
-              <h5
-                th:text="${album.albumName}"
-                class="card-title"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></h5>
+              <form style="display: inline" th:action="@{/artist/songs}">
+                <input
+                  type="hidden"
+                  name="artistId"
+                  th:value="${artist.artistId}"
+                />
+                <button
+                  type="submit"
+                  style="
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    color: inherit;
+                    cursor: pointer;
+                    width: 100%;
+                    display: block;
+                  "
+                >
+                  <h5
+                    th:text="${artist.artistName}"
+                    class="card-title"
+                    style="
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    "
+                  ></h5>
+                </button>
+              </form>
 
-              <p
-                class="card-text"
-                th:text="${album.getArtistName()}"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></p>
-
-              <p th:text="${album.formatPrice(album.albumPrice)}"></p>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
           </div>

@@ -25,6 +25,7 @@ public class Artist {
     private Long artistId;
     private String artistName;
     private String artistBio;
+    private String artistImage;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<Album> albums = new ArrayList<>();
@@ -35,20 +36,14 @@ public class Artist {
                     @JoinColumn(name = "song_id", referencedColumnName = "songId") })
     private Set<Song> songs = new HashSet<>();
 
-    @ManyToMany(mappedBy = "featuredArtist")
-    private Set<Song> featuredInSongs = new HashSet<>();
-
-    public Set<Song> getFeaturedInSongs() {
-        return featuredInSongs;
-    }
-
     public Artist() {
 
     }
 
-    public Artist(String artistName, String artistBio) {
+    public Artist(String artistName, String artistBio, String artistImage) {
         this.artistName = artistName;
         this.artistBio = artistBio;
+        this.artistImage = artistImage;
     }
 
     public Long getArtistId() {
@@ -69,6 +64,14 @@ public class Artist {
 
     public void setArtistBio(String artistBio) {
         this.artistBio = artistBio;
+    }
+
+    public String getArtistImage() {
+        return artistImage;
+    }
+
+    public void setArtistImage(String artistImage) {
+        this.artistImage = artistImage;
     }
 
     public Set<Song> getSongs() {
@@ -97,9 +100,4 @@ public class Artist {
         this.albums.add(album);
         album.setArtist(this);
     }
-
-    public void setFeaturedInSongs(Set<Song> featuredInSongs) {
-        this.featuredInSongs = featuredInSongs;
-    }
-
 }

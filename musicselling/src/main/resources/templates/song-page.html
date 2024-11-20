@@ -68,11 +68,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                aria-current="page"
-                th:href="@{/song-list}"
-                >Home</a
+              <a class="nav-link" aria-current="page" th:href="@{/song-list}"
+                >Songs</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" th:href="@{/artist}"
+                >Artists</a
               >
             </li>
             <li class="nav-item">
@@ -175,67 +177,6 @@
 
           <div class="mt-4">
             <button class="btn btn-primary">Add to Cart</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-5">
-        <h2>More By <span th:text="${artist.artistName}"></span></h2>
-        <div class="row">
-          <div class="col-6 col-md-3 mb-4" th:each="otherSong: ${otherSongs}">
-            <div class="card h-100">
-              <form style="display: inline" th:action="@{/song-page}">
-                <input
-                  type="hidden"
-                  name="songId"
-                  th:value="${otherSong.songId}"
-                />
-                <button
-                  type="submit"
-                  style="
-                    background: none;
-                    border: none;
-                    padding: 0;
-                    margin: 0;
-                    color: inherit;
-                    cursor: pointer;
-                    width: 100%;
-                    display: block;
-                  "
-                >
-                  <img
-                    th:src="${otherSong.songImage}"
-                    class="card-img-top"
-                    alt="Song Cover"
-                  />
-                </button>
-              </form>
-
-              <div class="card-body text-center">
-                <form style="display: inline" th:action="@{/song-page}">
-                  <input
-                    type="hidden"
-                    name="songId"
-                    th:value="${otherSong.songId}"
-                  />
-                  <button
-                    type="submit"
-                    style="
-                      background: none;
-                      border: none;
-                      padding: 0;
-                      margin: 0;
-                      color: inherit;
-                      cursor: pointer;
-                      width: 100%;
-                      display: block;
-                    "
-                  >
-                    <p class="card-title" th:text="${otherSong.songName}"></p>
-                  </button>
-                </form>
-              </div>
-            </div>
           </div>
         </div>
       </div>

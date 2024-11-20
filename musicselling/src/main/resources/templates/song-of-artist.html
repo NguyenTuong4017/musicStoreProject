@@ -18,11 +18,11 @@
         cursor: pointer;
       }
       .svg-container svg {
-        fill: grey; /* Default fill color */
-        transition: filter 0.3s ease; /* Smooth transition for the filter property */
+        fill: grey;
+        transition: filter 0.3s ease;
       }
       .svg-container:hover svg {
-        filter: brightness(150%); /* Increase brightness by 150% on hover */
+        filter: brightness(150%);
       }
 
       html,
@@ -152,53 +152,33 @@
     </nav>
 
     <div class="container text-center content">
-      <div class="row row-cols-md-4 g-4">
-        <div th:each="album: ${albumList}" class="col">
-          <div class="card" style="width: 18rem">
-            <form style="display: inline" th:action="@{/album/songs}">
-              <input type="hidden" name="albumId" th:value="${album.albumId}" />
-              <button
-                type="submit"
-                style="
-                  background: none;
-                  border: none;
-                  padding: 0;
-                  margin: 0;
-                  color: inherit;
-                  cursor: pointer;
-                "
-              >
-                <img
-                  th:src="@{${album.albumImage}}"
-                  class="card-img-top"
-                  alt="song-image"
-                />
-              </button>
-            </form>
-
-            <div class="card-body">
-              <h5
-                th:text="${album.albumName}"
-                class="card-title"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></h5>
-
-              <p
-                class="card-text"
-                th:text="${album.getArtistName()}"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></p>
-
-              <p th:text="${album.formatPrice(album.albumPrice)}"></p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+      <div class="row">
+        <div class="col-md-4">
+          <img
+            th:src="${artist.artistImage}"
+            class="img-fluid"
+            alt="Artist Cover"
+          />
+        </div>
+        <div class="col-md-8">
+          <h1 th:text="${artist.artistName}"></h1>
+          <h3 th:text="${artist.artistBio}"></h3>
+        </div>
+      </div>
+      <div class="mt-5">
+        <h2>More By <span th:text="${artist.artistName}"></span></h2>
+        <div class="row">
+          <!-- Song 1 -->
+          <div class="col-6 col-md-3 mb-4" th:each="song: ${songList}">
+            <div class="card h-100">
+              <img
+                th:src="${song.songImage}"
+                class="card-img-top"
+                alt="Song  Cover"
+              />
+              <div class="card-body text-center">
+                <p class="card-title" th:text="${song.songName}"></p>
+              </div>
             </div>
           </div>
         </div>
