@@ -57,9 +57,9 @@ public class MusicsellingApplication {
 					"/static/artist-image/amee.jpeg");
 			Artist binh_gold = new Artist("Bình Gold", "Bình Gold is a Vietnamese rapper based in Ha Noi.",
 					"/static/artist-image/binh-gold.jpeg");
-			Artist two_pillz = new Artist("2pillz", "2pillz is a music producer and DJ based in Ho Chi Minh city",
+			Artist two_pillz = new Artist("2pillz", "2pillz is a music producer and DJ based in Ho Chi Minh city.",
 					"/static/artist-image/2pillz.jpeg");
-			Artist wokeup = new Artist("WOKEUP", "WOKEUP is a music producer and DJ based in Ho Chi Minh city",
+			Artist wokeup = new Artist("WOKEUP", "WOKEUP is a music producer and DJ based in Ho Chi Minh city.",
 					"/static/artist-image/wokeup.jpeg");
 
 			// create songs

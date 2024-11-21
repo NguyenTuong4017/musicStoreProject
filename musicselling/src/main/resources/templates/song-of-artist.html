@@ -171,13 +171,52 @@
           <!-- Song 1 -->
           <div class="col-6 col-md-3 mb-4" th:each="song: ${songList}">
             <div class="card h-100">
-              <img
-                th:src="${song.songImage}"
-                class="card-img-top"
-                alt="Song  Cover"
-              />
+              <form th:action="@{/song-page}" style="display: inline">
+                <input type="hidden" name="songId" th:value="${song.songId}" />
+                <button
+                  type="submit"
+                  style="
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    margin: 0;
+                    color: inherit;
+                    cursor: pointer;
+                    width: 100%;
+                    display: block;
+                  "
+                >
+                  <img
+                    th:src="${song.songImage}"
+                    class="card-img-top"
+                    alt="Song  Cover"
+                  />
+                </button>
+              </form>
+
               <div class="card-body text-center">
-                <p class="card-title" th:text="${song.songName}"></p>
+                <form th:action="@{/song-page}" style="display: inline">
+                  <input
+                    type="hidden"
+                    name="songId"
+                    th:value="${song.songId}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: none;
+                      border: none;
+                      padding: 0;
+                      margin: 0;
+                      color: inherit;
+                      cursor: pointer;
+                      width: 100%;
+                      display: block;
+                    "
+                  >
+                    <p class="card-title" th:text="${song.songName}"></p>
+                  </button>
+                </form>
               </div>
             </div>
           </div>
