@@ -9,6 +9,10 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
     <title>Song List</title>
 
@@ -132,45 +136,27 @@
             </li>
           </ul>
           <div style="margin-right: 1rem" class="svg-container">
-            <form style="display: inline" th:action="@{/cart}">
-              <input type="hidden" />
-              <button
-                type="submit"
-                style="
-                  background: none;
-                  border: none;
-                  padding: 0;
-                  margin: 0;
-                  color: inherit;
-                  cursor: pointer;
-                  width: 100%;
-                  display: block;
-                "
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="35"
-                  height="35"
-                  fill="grey"
-                  class="bi bi-cart2"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"
-                  />
-                </svg>
-              </button>
-            </form>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="35"
+              height="35"
+              fill="grey"
+              class="bi bi-cart2"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"
+              />
+            </svg>
           </div>
 
-          <form class="d-flex" role="search" th:action="@{/find}" method="get">
+          <form class="d-flex" role="search" th:action="@{/find}" method="post">
             <input
               class="form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
               name="searchString"
-              th:value="${searchString}"
             />
             <button class="btn btn-outline-primary" type="submit">
               Search
@@ -179,86 +165,87 @@
         </div>
       </div>
     </nav>
-    <div class="container text-center content">
-      <div class="row row-cols-md-4 g-4">
-        <div th:each="song: ${songList}" class="col">
-          <div class="card" style="width: 18rem">
-            <form style="display: inline" th:action="@{/song-page}">
-              <input type="hidden" name="songId" th:value="${song.songId}" />
-              <button
-                type="submit"
-                style="
-                  background: none;
-                  border: none;
-                  padding: 0;
-                  margin: 0;
-                  color: inherit;
-                  cursor: pointer;
-                "
-              >
-                <img
-                  th:src="@{${song.songImage}}"
-                  class="card-img-top"
-                  alt="song-image"
-                />
-              </button>
-            </form>
+    <div class="container my-5">
+      <h1 class="mb-4">Shopping Cart</h1>
+      <!-- Quantity of Products -->
+      <p>
+        You have
+        <strong id="product-count" th:text="${songItems.size()}"></strong> items
+        in your cart.
+      </p>
 
+      <div class="row">
+        <!-- Product List -->
+        <div class="col-md-8">
+          <div id="cart-form">
+            <!-- Product Item -->
+            <div class="card mb-3" th:each="song: ${songItems}">
+              <div class="row g-0 align-items-center">
+                <div class="col-2">
+                  <!-- Product Image -->
+                  <img
+                    th:src="${song.songImage}"
+                    class="img-fluid"
+                    alt="Product 1"
+                  />
+                </div>
+                <div class="col-5">
+                  <div class="card-body">
+                    <!-- Product Name -->
+                    <h5 class="card-title mb-0" th:text="${song.songName}"></h5>
+                    <!-- Product Price -->
+                    <p
+                      class="text-muted"
+                      th:text="${song.formatPrice(song.songPrice)}"
+                    ></p>
+                  </div>
+                </div>
+
+                <div class="col-2 text-center">
+                  <!-- Delete Icon -->
+                  <form
+                    style="display: inline"
+                    th:action="@{/remove-song-from-cart}"
+                    method="get"
+                  >
+                    <input
+                      type="hidden"
+                      name="songId"
+                      th:value="${song.songId}"
+                    />
+                    <button
+                      type="submit"
+                      class="btn btn-link text-danger remove-product"
+                    >
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="col-md-4">
+          <div class="card">
             <div class="card-body">
-              <form style="display: inline" th:action="@{/song-page}">
-                <input type="hidden" name="songId" th:value="${song.songId}" />
-                <button
-                  type="submit"
-                  style="
-                    background: none;
-                    border: none;
-                    padding: 0;
-                    margin: 0;
-                    color: inherit;
-                    cursor: pointer;
-                    width: 100%;
-                    display: block;
-                  "
-                >
-                  <h5
-                    th:text="${song.songName}"
-                    class="card-title"
-                    style="
-                      white-space: nowrap;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                    "
-                  ></h5>
-                </button>
-              </form>
-
-              <p
-                class="card-text"
-                th:text="${song.getArtistName()}"
-                style="
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-              ></p>
-              <p th:text="${song.formatPrice(song.songPrice)}"></p>
-              <form style="display: inline" th:action="@{/add-song-to-cart}">
-                <input type="hidden" name="songId" th:value="${song.songId}" />
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  th:if="${!itemId.contains(song.songId)}"
-                >
-                  Add to cart
-                </button>
-                <a
-                  th:href="@{/cart}"
-                  class="btn btn-success"
-                  th:if="${itemId.contains(song.songId)}"
-                >
-                  Go to cart
-                </a>
-              </form>
+              <h4>Order Summary</h4>
+              <hr />
+              <p>
+                Subtotal (<span
+                  id="total-items"
+                  th:text="${songItems.size()}"
+                ></span>
+                items):
+                <strong
+                  >€<span id="total-price" th:text="${totalPrice}"></span
+                ></strong>
+              </p>
+              <!-- Pay Button -->
+              <button class="btn btn-success btn-block" id="pay-button">
+                Pay Now
+              </button>
             </div>
           </div>
         </div>
