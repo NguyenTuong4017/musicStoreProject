@@ -57,4 +57,39 @@ public class CartItem {
         this.cart = cart;
     }
 
+    public String getCartItemImage() {
+        if (this.getSong() != null) {
+            return this.getSong().getSongImage();
+        } else if (this.getAlbum() != null) {
+            return this.getAlbum().getAlbumImage();
+        }
+        return null;
+    }
+
+    public String getCartItemName() {
+        if (this.getSong() != null) {
+            return this.getSong().getSongName();
+        } else if (this.getAlbum() != null) {
+            return this.getAlbum().getAlbumName();
+        }
+        return null;
+    }
+
+    public float getCartItemPrice() {
+        if (this.getSong() != null) {
+            return this.getSong().getSongPrice();
+        } else if (this.getAlbum() != null) {
+            return this.getAlbum().getAlbumPrice();
+        }
+        return 0;
+    }
+
+    public Long getCartItemId() {
+        if (this.getSong() != null) {
+            return this.getSong().getSongId();
+        } else if (this.getAlbum() != null) {
+            return this.getAlbum().getAlbumId();
+        }
+        return null;
+    }
 }

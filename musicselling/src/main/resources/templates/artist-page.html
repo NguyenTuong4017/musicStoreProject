@@ -238,8 +238,14 @@
                   ></h5>
                 </button>
               </form>
-
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <form style="display: inline" th:action="@{/artist/songs}">
+                <input
+                  type="hidden"
+                  name="artistId"
+                  th:value="${artist.artistId}"
+                />
+                <button type="submit" class="btn btn-primary">See More</button>
+              </form>
             </div>
           </div>
         </div>

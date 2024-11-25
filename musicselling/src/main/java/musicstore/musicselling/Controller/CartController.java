@@ -63,40 +63,56 @@ public class CartController {
         return "redirect:/" + map;
     }
 
+    // add album to cart
+    @GetMapping("/add-album-to-cart")
+    public String addAlbumToCart(@RequestParam Long albumId, HttpServletRequest request) {
+        Cart cart = getOrCreateCart();
+        Album album = albumRepository.findByAlbumId(albumId);
+        CartItem item = new CartItem();
+
+        item.setAlbum(album);
+        cart.addCartItems(item);
+        cartRepository.save(cart);
+
+        String pageDomain = request.getHeader("Referer");
+        String map = pageDomain.substring(pageDomain.lastIndexOf('/') + 1);
+
+        return "redirect:/" + map;
+
+    }
+
     // push the data of cart list to the cart page
     @GetMapping("/cart")
     public String songCart(Model model) {
         Cart cart = getOrCreateCart();
         List<Genre> genreList = genreRepository.findAll();
+        Set<CartItem> itemList = cart.getCartItems();
         double price = 0;
-        List<Song> songItems = new ArrayList<>();
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getSong() != null) {
-                songItems.add(cartItem.getSong());
-                price = price + cartItem.getSong().getSongPrice();
-            }
+
+        for (CartItem item : cart.getCartItems()) {
+            price = price + item.getCartItemPrice();
         }
 
         String totalPrice = String.format("%.2f", price);
+        model.addAttribute("itemList", itemList);
         model.addAttribute("genreList", genreList);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("songItems", songItems);
 
         return "cart";
     }
 
-    // remove the song from cart
-    @GetMapping("remove-song-from-cart")
-    public String removeSongFromCart(@RequestParam Long songId) {
+    // remove items from cart
+    @GetMapping("remove-item-from-cart")
+    public String removeItemFromCart(@RequestParam Long itemId) {
         Cart cart = getOrCreateCart();
         Set<CartItem> cartList = cart.getCartItems();
 
         CartItem itemToRemove = null;
 
         for (CartItem item : cartList) {
-            if (item.getSong().getSongId().equals(songId)) {
+            if (item.getCartItemId().equals(itemId)) {
                 itemToRemove = item;
-
+                break;
             }
         }
         if (itemToRemove != null) {

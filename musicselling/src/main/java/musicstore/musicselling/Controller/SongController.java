@@ -63,16 +63,19 @@ public class SongController {
     public String showAllSong(Model model) {
         List<Song> songList = songRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
-        List<Artist> artistList = artistRepository.findAll();
+
         List<Long> itemId = new ArrayList<>();
         Cart cart = getOrCreateCart();
 
         for (CartItem cartItem : cart.getCartItems()) {
-            itemId.add(cartItem.getSong().getSongId());
+            if (cartItem.getSong() != null) {
+                itemId.add(cartItem.getSong().getSongId());
+            }
+
         }
 
         model.addAttribute("itemId", itemId);
-        model.addAttribute("artistList", artistList);
+
         model.addAttribute("songList", songList);
         model.addAttribute("genreList", genreList);
         return "song-list";
@@ -89,7 +92,10 @@ public class SongController {
         String pageDomain = request.getHeader("Referer");
 
         for (CartItem cartItem : cart.getCartItems()) {
-            itemId.add(cartItem.getSong().getSongId());
+            if (cartItem.getSong() != null) {
+                itemId.add(cartItem.getSong().getSongId());
+            }
+
         }
 
         if (!songList.isEmpty()) {
@@ -124,7 +130,10 @@ public class SongController {
         Cart cart = getOrCreateCart();
 
         for (CartItem cartItem : cart.getCartItems()) {
-            itemId.add(cartItem.getSong().getSongId());
+            if (cartItem.getSong() != null) {
+                itemId.add(cartItem.getSong().getSongId());
+            }
+
         }
         model.addAttribute("itemId", itemId);
         model.addAttribute("songList", songList);
@@ -136,6 +145,15 @@ public class SongController {
     public String showAllAlbum(Model model) {
         List<Album> albumList = albumRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
+        List<Long> itemId = new ArrayList<>();
+        Cart cart = getOrCreateCart();
+
+        for (CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getAlbum() != null) {
+                itemId.add(cartItem.getAlbum().getAlbumId());
+            }
+        }
+        model.addAttribute("itemId", itemId);
         model.addAttribute("albumList", albumList);
         model.addAttribute("genreList", genreList);
         return "album";
@@ -159,6 +177,14 @@ public class SongController {
         List<Genre> genreList = genreRepository.findAll();
 
         Song song = songRepository.findBySongId(songId);
+
+        List<Long> itemId = new ArrayList<>();
+        Cart cart = getOrCreateCart();
+
+        for (CartItem cartItem : cart.getCartItems()) {
+            itemId.add(cartItem.getSong().getSongId());
+        }
+        model.addAttribute("itemId", itemId);
 
         model.addAttribute("song", song);
         model.addAttribute("genreList", genreList);

@@ -186,14 +186,23 @@
           </p>
 
           <div class="mt-4">
-            <audio controls>
-              <source src="song.mp3" type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-
-          <div class="mt-4">
-            <button class="btn btn-primary">Add to Cart</button>
+            <form style="display: inline" th:action="@{/add-song-to-cart}">
+              <input type="hidden" name="songId" th:value="${song.songId}" />
+              <button
+                type="submit"
+                class="btn btn-primary"
+                th:if="${!itemId.contains(song.songId)}"
+              >
+                Add to cart
+              </button>
+              <a
+                th:href="@{/cart}"
+                class="btn btn-success"
+                th:if="${itemId.contains(song.songId)}"
+              >
+                Go to cart
+              </a>
+            </form>
           </div>
         </div>
       </div>

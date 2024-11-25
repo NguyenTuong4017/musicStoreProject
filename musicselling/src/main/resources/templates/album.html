@@ -215,7 +215,27 @@
               ></p>
 
               <p th:text="${album.formatPrice(album.albumPrice)}"></p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <form style="display: inline" th:action="@{/add-album-to-cart}">
+                <input
+                  type="hidden"
+                  name="albumId"
+                  th:value="${album.albumId}"
+                />
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  th:if="${!itemId.contains(album.albumId)}"
+                >
+                  Add to cart
+                </button>
+                <a
+                  th:href="@{/cart}"
+                  class="btn btn-success"
+                  th:if="${itemId.contains(album.albumId)}"
+                >
+                  Go to cart
+                </a>
+              </form>
             </div>
           </div>
         </div>

@@ -165,12 +165,12 @@
         </div>
       </div>
     </nav>
-    <div class="container my-5">
+    <div class="container my-5 content">
       <h1 class="mb-4">Shopping Cart</h1>
       <!-- Quantity of Products -->
       <p>
         You have
-        <strong id="product-count" th:text="${songItems.size()}"></strong> items
+        <strong id="product-count" th:text="${itemList.size()}"></strong> items
         in your cart.
       </p>
 
@@ -179,12 +179,12 @@
         <div class="col-md-8">
           <div id="cart-form">
             <!-- Product Item -->
-            <div class="card mb-3" th:each="song: ${songItems}">
+            <div class="card mb-3" th:each="item: ${itemList}">
               <div class="row g-0 align-items-center">
                 <div class="col-2">
                   <!-- Product Image -->
                   <img
-                    th:src="${song.songImage}"
+                    th:src="${item.getCartItemImage()}"
                     class="img-fluid"
                     alt="Product 1"
                   />
@@ -192,12 +192,16 @@
                 <div class="col-5">
                   <div class="card-body">
                     <!-- Product Name -->
-                    <h5 class="card-title mb-0" th:text="${song.songName}"></h5>
+                    <h5
+                      class="card-title mb-0"
+                      th:text="${item.getCartItemName()}"
+                    ></h5>
                     <!-- Product Price -->
-                    <p
-                      class="text-muted"
-                      th:text="${song.formatPrice(song.songPrice)}"
-                    ></p>
+
+                    <p class="text-muted">
+                      €
+                      <span th:text="${item.getCartItemPrice()}"></span>
+                    </p>
                   </div>
                 </div>
 
@@ -205,13 +209,13 @@
                   <!-- Delete Icon -->
                   <form
                     style="display: inline"
-                    th:action="@{/remove-song-from-cart}"
+                    th:action="@{/remove-item-from-cart}"
                     method="get"
                   >
                     <input
                       type="hidden"
-                      name="songId"
-                      th:value="${song.songId}"
+                      name="itemId"
+                      th:value="${item.getCartItemId()}"
                     />
                     <button
                       type="submit"
@@ -235,7 +239,7 @@
               <p>
                 Subtotal (<span
                   id="total-items"
-                  th:text="${songItems.size()}"
+                  th:text="${itemList.size()}"
                 ></span>
                 items):
                 <strong
