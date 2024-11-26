@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import musicstore.musicselling.Entity.Song;
+import musicstore.musicselling.Entity.UserEntity;
 import musicstore.musicselling.Entity.Album;
 import musicstore.musicselling.Entity.Artist;
 import musicstore.musicselling.Entity.Cart;
@@ -78,18 +79,26 @@ public class SongController {
     public String showAllSong(Model model) {
         List<Song> songList = songRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
+        boolean isLoggedIn = false;
 
         List<Long> itemId = new ArrayList<>();
         Cart cart = getOrCreateCart();
 
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getSong() != null) {
-                itemId.add(cartItem.getSong().getSongId());
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
+
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
             }
-
+            model.addAttribute("itemId", itemId);
         }
-
-        model.addAttribute("itemId", itemId);
+        System.out.println("The user is " + isLoggedIn);
+        model.addAttribute("isLoggedIn", isLoggedIn);
 
         model.addAttribute("songList", songList);
         model.addAttribute("genreList", genreList);
