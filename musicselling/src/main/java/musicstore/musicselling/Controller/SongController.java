@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -22,6 +24,9 @@ import musicstore.musicselling.Repository.CartItemRepository;
 import musicstore.musicselling.Repository.CartRepository;
 import musicstore.musicselling.Repository.GenreRepository;
 import musicstore.musicselling.Repository.SongRepository;
+import musicstore.musicselling.Repository.UserRepository;
+import musicstore.musicselling.Service.CustomUserDetail;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,13 +55,23 @@ public class SongController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    private Cart getOrCreateCart() {
-        if (cartRepository.findByCartId(1L) == null) {
-            Cart cart = new Cart();
-            return cartRepository.save(cart);
-        }
-        return cartRepository.findByCartId(1L);
+    @Autowired
+    private UserRepository userRepository;
 
+    private Cart getOrCreateCart() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+        Long userId = userDetail.getId();
+
+        Cart cart = cartRepository.findCartByUserUserId(userId);
+
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(userRepository.findByUserId(userId));
+            cartRepository.save(cart);
+        }
+
+        return cart;
     }
 
     @GetMapping("/song-list")

@@ -8,16 +8,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.transaction.Transactional;
 import musicstore.musicselling.Entity.Album;
 import musicstore.musicselling.Entity.Artist;
 import musicstore.musicselling.Entity.Genre;
 import musicstore.musicselling.Entity.Song;
+import musicstore.musicselling.Entity.UserEntity;
 import musicstore.musicselling.Repository.AlbumRepository;
 import musicstore.musicselling.Repository.ArtistRepository;
 import musicstore.musicselling.Repository.GenreRepository;
 import musicstore.musicselling.Repository.SongRepository;
+import musicstore.musicselling.Repository.UserRepository;
 
 @SpringBootApplication
 public class MusicsellingApplication {
@@ -33,6 +36,9 @@ public class MusicsellingApplication {
 	@Autowired
 	private AlbumRepository albumRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MusicsellingApplication.class, args);
 	}
@@ -40,7 +46,18 @@ public class MusicsellingApplication {
 	@Bean
 	@Transactional
 	public CommandLineRunner commandLineRunner() {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return args -> {
+
+			// create user
+			UserEntity user1 = new UserEntity("user1", encoder.encode("user1"), "USER");
+			UserEntity user2 = new UserEntity("admin", encoder.encode("admin"), "ADMIN");
+			UserEntity user3 = new UserEntity("user3", encoder.encode("user3"), "USER");
+			// save user
+			// userRepository.save(user1);
+			// userRepository.save(user2);
+			// userRepository.save(user3);
+
 			// create artists
 			Artist song_tung_mtp = new Artist("Sơn Tùng M-TP", "Vietnamese singer-songwriter and actor.",
 					"/static/artist-image/son-tung.jpeg");

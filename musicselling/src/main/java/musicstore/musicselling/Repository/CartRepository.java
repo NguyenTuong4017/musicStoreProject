@@ -7,4 +7,5 @@ import musicstore.musicselling.Entity.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Cart findByCartId(Long id);
 
+    Cart findCartByUserUserId(Long userId);
 }

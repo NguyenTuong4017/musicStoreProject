@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,8 @@ import musicstore.musicselling.Repository.CartItemRepository;
 import musicstore.musicselling.Repository.CartRepository;
 import musicstore.musicselling.Repository.GenreRepository;
 import musicstore.musicselling.Repository.SongRepository;
+import musicstore.musicselling.Repository.UserRepository;
+import musicstore.musicselling.Service.CustomUserDetail;
 
 @Controller
 public class CartController {
@@ -35,15 +39,25 @@ public class CartController {
     private CartItemRepository cartItemRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private GenreRepository genreRepository;
 
     private Cart getOrCreateCart() {
-        if (cartRepository.findByCartId(1L) == null) {
-            Cart cart = new Cart();
-            return cartRepository.save(cart);
-        }
-        return cartRepository.findByCartId(1L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+        Long userId = userDetail.getId();
 
+        Cart cart = cartRepository.findCartByUserUserId(userId);
+
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(userRepository.findByUserId(userId));
+            cartRepository.save(cart);
+        }
+
+        return cart;
     }
 
     // add the song to the cart
