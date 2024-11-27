@@ -101,12 +101,28 @@ public class CartController {
         Cart cart = getOrCreateCart();
         List<Genre> genreList = genreRepository.findAll();
         Set<CartItem> itemList = cart.getCartItems();
+        List<Long> itemId = new ArrayList<>();
+        boolean isLoggedIn = false;
         double price = 0;
 
         for (CartItem item : cart.getCartItems()) {
             price = price + item.getCartItemPrice();
         }
 
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
+
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
+            }
+            model.addAttribute("itemId", itemId);
+        }
+        model.addAttribute("isLoggedIn", isLoggedIn);
         String totalPrice = String.format("%.2f", price);
         model.addAttribute("itemList", itemList);
         model.addAttribute("genreList", genreList);

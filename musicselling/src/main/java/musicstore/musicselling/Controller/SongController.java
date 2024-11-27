@@ -113,18 +113,26 @@ public class SongController {
         List<Genre> genreList = genreRepository.findAll();
         Cart cart = getOrCreateCart();
         List<Long> itemId = new ArrayList<>();
+        boolean isLoggedIn = false;
         String pageDomain = request.getHeader("Referer");
 
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getSong() != null) {
-                itemId.add(cartItem.getSong().getSongId());
-            }
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
 
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
+            }
+            model.addAttribute("itemId", itemId);
         }
 
         if (!songList.isEmpty()) {
             System.out.println(pageDomain);
-            model.addAttribute("itemId", itemId);
+            model.addAttribute("isLoggedIn", isLoggedIn);
             model.addAttribute("songList", songList);
             model.addAttribute("genreList", genreList);
             return "search-result";
@@ -133,12 +141,13 @@ public class SongController {
         List<Song> songList2 = songRepository.findBySongNameContaining(searchString);
         if (!songList2.isEmpty()) {
             System.out.println(pageDomain);
-            model.addAttribute("itemId", itemId);
+            model.addAttribute("isLoggedIn", isLoggedIn);
+
             model.addAttribute("songList", songList2);
             model.addAttribute("genreList", genreList);
             return "search-result";
         }
-
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("genreList", genreList);
         model.addAttribute("message", "No result.");
         return "error";
@@ -151,14 +160,23 @@ public class SongController {
         Genre genre = genreRepository.findByGenreId(genreId);
         Set<Song> songList = genre.getSongs();
         List<Long> itemId = new ArrayList<>();
+        boolean isLoggedIn = false;
         Cart cart = getOrCreateCart();
 
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getSong() != null) {
-                itemId.add(cartItem.getSong().getSongId());
-            }
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
 
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
+            }
+            model.addAttribute("itemId", itemId);
         }
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("itemId", itemId);
         model.addAttribute("songList", songList);
         model.addAttribute("genreList", genreList);
@@ -170,14 +188,23 @@ public class SongController {
         List<Album> albumList = albumRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
         List<Long> itemId = new ArrayList<>();
+        boolean isLoggedIn = false;
         Cart cart = getOrCreateCart();
 
-        for (CartItem cartItem : cart.getCartItems()) {
-            if (cartItem.getAlbum() != null) {
-                itemId.add(cartItem.getAlbum().getAlbumId());
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
+
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
             }
+            model.addAttribute("itemId", itemId);
         }
-        model.addAttribute("itemId", itemId);
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("albumList", albumList);
         model.addAttribute("genreList", genreList);
         return "album";
@@ -188,6 +215,25 @@ public class SongController {
         Album album = albumRepository.findByAlbumId(albumId);
         List<Song> songList = album.getSongs();
         List<Genre> genreList = genreRepository.findAll();
+        List<Long> itemId = new ArrayList<>();
+
+        boolean isLoggedIn = false;
+        Cart cart = getOrCreateCart();
+
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
+
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
+            }
+            model.addAttribute("itemId", itemId);
+        }
+        model.addAttribute("isLoggedIn", isLoggedIn);
 
         model.addAttribute("album", album);
         model.addAttribute("songList", songList);
@@ -203,12 +249,23 @@ public class SongController {
         Song song = songRepository.findBySongId(songId);
 
         List<Long> itemId = new ArrayList<>();
+        boolean isLoggedIn = false;
         Cart cart = getOrCreateCart();
 
-        for (CartItem cartItem : cart.getCartItems()) {
-            itemId.add(cartItem.getSong().getSongId());
+        if (cart != null) {
+            isLoggedIn = true;
+            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
+            model.addAttribute("user", user);
+
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (cartItem.getSong() != null) {
+                    itemId.add(cartItem.getSong().getSongId());
+                }
+
+            }
+            model.addAttribute("itemId", itemId);
         }
-        model.addAttribute("itemId", itemId);
+        model.addAttribute("isLoggedIn", isLoggedIn);
 
         model.addAttribute("song", song);
         model.addAttribute("genreList", genreList);
