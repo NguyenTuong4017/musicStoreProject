@@ -1,22 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS for styling -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+
+    <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
+    <!-- Page title -->
     <title>Song List</title>
 
+    <!-- Internal CSS styles -->
     <style>
+      /* Styles for SVG icon containers */
       .svg-container {
         display: inline-block;
         cursor: pointer;
@@ -29,30 +37,29 @@
         filter: brightness(150%); /* Increase brightness by 150% on hover */
       }
 
+      /* Ensure footer stays at the bottom */
       html,
       body {
         height: 100%;
         margin: 0;
       }
-
       body {
         display: flex;
         flex-direction: column;
       }
-
       .content {
         flex: 1 0 auto;
       }
-
       .footer {
         flex-shrink: 0;
       }
+
+      /* Custom link styles */
       .custom-link {
         color: #007bff; /* Bootstrap primary color */
         text-decoration: none; /* No underline by default */
         transition: all 0.3s ease; /* Smooth transition for color and text-decoration */
       }
-
       .custom-link:hover,
       .custom-link:focus {
         color: #0056b3; /* Darker shade for hover effect, adjust as needed */
@@ -61,12 +68,13 @@
     </style>
   </head>
   <body>
+    <!-- Navigation bar -->
     <nav
       class="navbar navbar-expand-lg bg-body-tertiary mb-5 bg-dark"
       data-bs-theme="dark"
     >
       <div class="container-fluid">
-        <!-- Logo -->
+        <!-- Logo linking to the song list page -->
         <a class="navbar-brand" th:href="@{/song-list}">
           <img src="/static/logo.png" alt="Logo" width="70" height="70" />
         </a>
@@ -102,6 +110,7 @@
             <li class="nav-item">
               <a class="nav-link" th:href="@{/album}">Album/EP</a>
             </li>
+            <!-- Genres dropdown menu -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -113,13 +122,16 @@
                 Genres
               </a>
               <ul class="dropdown-menu">
+                <!-- Loop through each genre in genreList -->
                 <li th:each="genre: ${genreList}">
                   <form style="display: inline" th:action="@{/song-genre}">
+                    <!-- Hidden input to pass genreId -->
                     <input
                       type="hidden"
                       name="genreId"
                       th:value="${genre.genreId}"
                     />
+                    <!-- Button styled as a dropdown item -->
                     <button
                       type="submit"
                       class="dropdown-item"
@@ -132,12 +144,14 @@
                         cursor: pointer;
                       "
                     >
+                      <!-- Display genre name -->
                       <span th:text="${genre.genreName}"></span>
                     </button>
                   </form>
                 </li>
               </ul>
             </li>
+            <!-- Disabled nav item (placeholder) -->
             <li class="nav-item">
               <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
@@ -151,6 +165,7 @@
             method="get"
             style="max-width: 30%"
           >
+            <!-- Search input field -->
             <input
               class="form-control me-2 flex-grow-1"
               type="search"
@@ -159,8 +174,9 @@
               name="searchString"
               th:value="${searchString}"
             />
+            <!-- Search button with icon -->
             <button class="btn btn-outline-primary" type="submit">
-              <!-- Search icon -->
+              <!-- Search icon SVG -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -192,6 +208,7 @@
                     cursor: pointer;
                   "
                 >
+                  <!-- Cart icon SVG -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="35"
@@ -208,7 +225,7 @@
               </form>
             </div>
 
-            <!-- User icon -->
+            <!-- User icon and dropdown -->
             <div class="svg-container dropdown">
               <!-- When not logged in -->
               <button
@@ -225,6 +242,7 @@
                 data-bs-target="#loginModal"
                 th:if="${isLoggedIn == false}"
               >
+                <!-- User icon SVG -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -257,6 +275,7 @@
                 "
                 th:if="${isLoggedIn == true}"
               >
+                <!-- User icon SVG -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="35"
@@ -277,6 +296,7 @@
                 aria-labelledby="userDropdown"
               >
                 <li>
+                  <!-- Display signed-in username -->
                   <span class="dropdown-item-text">
                     Signed in as <strong th:text="${user.Username}"></strong>
                   </span>
@@ -286,6 +306,7 @@
                 </li>
 
                 <li>
+                  <!-- Logout form -->
                   <form th:action="@{/logout}" method="post">
                     <button class="dropdown-item">Logout</button>
                   </form>
@@ -296,7 +317,10 @@
         </div>
       </div>
     </nav>
+
+    <!-- Main content container -->
     <div class="container my-5 content">
+      <!-- Page title -->
       <h1 class="mb-4">Shopping Cart</h1>
       <!-- Quantity of Products -->
       <p>
@@ -309,7 +333,7 @@
         <!-- Product List -->
         <div class="col-md-8">
           <div id="cart-form">
-            <!-- Product Item -->
+            <!-- Loop through each item in itemList -->
             <div class="card mb-3" th:each="item: ${itemList}">
               <div class="row g-0 align-items-center">
                 <div class="col-2">
@@ -328,9 +352,9 @@
                       th:text="${item.getCartItemName()}"
                     ></h5>
                     <!-- Product Price -->
-
                     <p class="text-muted">
                       €
+                      <!-- Euro symbol -->
                       <span th:text="${item.getCartItemPrice()}"></span>
                     </p>
                   </div>
@@ -343,11 +367,13 @@
                     th:action="@{/remove-item-from-cart}"
                     method="get"
                   >
+                    <!-- Hidden input to pass itemId -->
                     <input
                       type="hidden"
                       name="itemId"
                       th:value="${item.getCartItemId()}"
                     />
+                    <!-- Delete button with trash icon -->
                     <button
                       type="submit"
                       class="btn btn-link text-danger remove-product"
@@ -358,6 +384,7 @@
                 </div>
               </div>
             </div>
+            <!-- End of product item loop -->
           </div>
         </div>
 
@@ -365,8 +392,10 @@
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
+              <!-- Order Summary Title -->
               <h4>Order Summary</h4>
               <hr />
+              <!-- Display subtotal -->
               <p>
                 Subtotal (<span
                   id="total-items"
@@ -387,9 +416,11 @@
       </div>
     </div>
 
+    <!-- Footer Section -->
     <footer class="footer bg-dark text-center text-lg-start text-white mt-5">
       <div class="container p-4">
         <div class="row">
+          <!-- Footer content -->
           <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
             <h5 class="text-uppercase">Footer Content</h5>
             <p>
@@ -398,6 +429,7 @@
             </p>
           </div>
 
+          <!-- Footer links -->
           <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 class="text-uppercase">Links</h5>
 
@@ -417,6 +449,7 @@
             </ul>
           </div>
 
+          <!-- Additional footer links -->
           <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 class="text-uppercase">Links</h5>
 
@@ -438,6 +471,7 @@
         </div>
       </div>
 
+      <!-- Footer bottom text -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2024 Company Name:
         <a class="text-white" href="https://yourwebsite.com/"
@@ -446,6 +480,7 @@
       </div>
     </footer>
 
+    <!-- Bootstrap JS bundle with Popper.js -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

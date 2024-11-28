@@ -5,14 +5,14 @@
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
 >
   <head>
-    <!-- Required meta tags -->
+    <!-- Required meta tags for character encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS for styling and responsiveness -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -20,20 +20,23 @@
       crossorigin="anonymous"
     />
 
+    <!-- Page title -->
     <title>Sign Up</title>
   </head>
   <body>
-    <!-- Sign Up Form -->
+    <!-- Sign Up Form Container -->
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-6">
+          <!-- Sign Up Heading -->
           <h2 class="text-center mb-4">Create an Account</h2>
+          <!-- Sign Up Form -->
           <form
             th:action="@{/create-new-user}"
             th:object="${user}"
             method="post"
           >
-            <!-- Username -->
+            <!-- Username Field -->
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
 
@@ -47,7 +50,7 @@
                 required
               />
             </div>
-            <!-- Password -->
+            <!-- Password Field -->
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
               <input
@@ -60,7 +63,7 @@
                 required
               />
             </div>
-            <!-- Confirm Password -->
+            <!-- Confirm Password Field -->
             <div class="mb-3">
               <label for="confirmPassword" class="form-label"
                 >Confirm Password</label
@@ -73,6 +76,7 @@
                 placeholder="Confirm your password"
                 required
               />
+              <!-- Hidden Input for User Role -->
               <input type="hidden" th:field="*{role}" th:value="'USER'" />
             </div>
             <!-- Submit Button -->
@@ -81,11 +85,12 @@
                 Sign Up
               </button>
             </div>
-            <!-- Already have an account? -->
+            <!-- Redirect to Log In -->
             <p class="text-center mt-3">
               Already have an account?
               <a th:href="@{/login}">Log In</a>
             </p>
+            <!-- Message Display (e.g., errors or success messages) -->
             <p
               class="text-center mt-3 fst-italic"
               th:if="${message != null}"
@@ -96,7 +101,7 @@
       </div>
     </div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
+    <!-- Bootstrap JS Bundle with Popper.js -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

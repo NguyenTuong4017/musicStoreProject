@@ -23,11 +23,13 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    // Return user to the login page
     @RequestMapping(value = "/login")
     public String login() {
         return "login";
     }
 
+    // Return user to the sign up page
     @GetMapping("sign-up")
     public String getMethodName(Model model) {
         UserEntity user = new UserEntity();
@@ -35,6 +37,7 @@ public class UserController {
         return "sign-up";
     }
 
+    // Retrieve new data to create a new user
     @PostMapping("create-new-user")
     public String postMethodName(@ModelAttribute("user") UserEntity newUser,
             @RequestParam String confirmPassword,
@@ -42,13 +45,13 @@ public class UserController {
 
         String message = null;
         UserEntity usernameCheck = userRepository.findByUsername(newUser.getUsername());
-
+        // Check if username was taken
         if (usernameCheck != null) {
             message = "Username was taken, please use another username.";
             model.addAttribute("message", message);
             return "sign-up";
         }
-
+        // If all conditions passed, create then save the new user to database
         if (newUser.getPassword().equals(confirmPassword)) {
             newUser.setRole("USER");
             newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));

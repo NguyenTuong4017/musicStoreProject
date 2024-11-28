@@ -2,8 +2,6 @@ package musicstore.musicselling.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,28 +9,28 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import musicstore.musicselling.Entity.Album;
-import musicstore.musicselling.Entity.Artist;
 import musicstore.musicselling.Entity.Cart;
 import musicstore.musicselling.Entity.CartItem;
 import musicstore.musicselling.Entity.Genre;
 import musicstore.musicselling.Entity.Song;
 import musicstore.musicselling.Entity.UserEntity;
+import musicstore.musicselling.Repository.AlbumRepository;
 import musicstore.musicselling.Repository.ArtistRepository;
+import musicstore.musicselling.Repository.CartItemRepository;
 import musicstore.musicselling.Repository.CartRepository;
 import musicstore.musicselling.Repository.GenreRepository;
 import musicstore.musicselling.Repository.SongRepository;
 import musicstore.musicselling.Repository.UserRepository;
 import musicstore.musicselling.Service.CustomUserDetail;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 @Controller
-public class ArtistController {
+public class AlbumController {
+
+    @Autowired
+    private SongRepository songRepository;
+
     @Autowired
     private ArtistRepository artistRepository;
 
@@ -40,10 +38,13 @@ public class ArtistController {
     private GenreRepository genreRepository;
 
     @Autowired
-    private SongRepository songRepository;
+    private AlbumRepository albumRepository;
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -68,20 +69,16 @@ public class ArtistController {
         return cart;
     }
 
-    // return to the page which shows all the artists
-    @GetMapping("/artist")
-    public String showAllArtist(Model model) {
-
-        // get all the artists
-        List<Artist> artistList = artistRepository.findAll();
-
-        // Get the genres to show on the navbar
+    // Return to the album page
+    @GetMapping("/album")
+    public String showAllAlbum(Model model) {
+        // Create model
+        List<Album> albumList = albumRepository.findAll();
         List<Genre> genreList = genreRepository.findAll();
-
         List<Long> itemId = new ArrayList<>();
         boolean isLoggedIn = false;
 
-        // create cart
+        // Create cart
         Cart cart = getOrCreateCart();
 
         // Add the user information to navbar
@@ -92,49 +89,42 @@ public class ArtistController {
 
             // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
-                if (cartItem.getSong() != null) {
-                    itemId.add(cartItem.getSong().getSongId());
+                if (cartItem.getAlbum() != null) {
+                    itemId.add(cartItem.getAlbum().getAlbumId());
                 }
 
             }
+            for (Long id : itemId) {
+                System.out.println("Album id: " + id);
+            }
             model.addAttribute("itemId", itemId);
         }
-
         model.addAttribute("isLoggedIn", isLoggedIn);
-        model.addAttribute("artistList", artistList);
+        model.addAttribute("albumList", albumList);
         model.addAttribute("genreList", genreList);
-        return "artist-page";
+        return "album";
     }
 
-    // return to the page that show one artist and his/her song
-    @GetMapping("/artist/songs")
-    public String showAllSongByArtist(Model model, Long artistId) {
-
-        // get the artist by id
-        Artist artist = artistRepository.findByArtistId(artistId);
-
-        // get all the artist's songs
-        Set<Song> songList = artist.getSongs();
-
-        // Get genres to add in the navbar
+    // Show all songs of an album
+    @GetMapping("/album/songs")
+    public String showAllSongsOfAlbum(Model model, Long albumId) {
+        Album album = albumRepository.findByAlbumId(albumId);
+        List<Song> songList = album.getSongs();
         List<Genre> genreList = genreRepository.findAll();
-
         List<Long> itemId = new ArrayList<>();
+
         boolean isLoggedIn = false;
-
-        // create cart
+        // Create cart
         Cart cart = getOrCreateCart();
-
         // Add the user information to navbar
         if (cart != null) {
             isLoggedIn = true;
             UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
             model.addAttribute("user", user);
-
             // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
-                if (cartItem.getSong() != null) {
-                    itemId.add(cartItem.getSong().getSongId());
+                if (cartItem.getAlbum() != null) {
+                    itemId.add(cartItem.getAlbum().getAlbumId());
                 }
 
             }
@@ -142,11 +132,11 @@ public class ArtistController {
         }
         model.addAttribute("isLoggedIn", isLoggedIn);
 
-        model.addAttribute("artist", artist);
-        model.addAttribute("genreList", genreList);
+        model.addAttribute("album", album);
         model.addAttribute("songList", songList);
+        model.addAttribute("genreList", genreList);
 
-        return "song-of-artist";
+        return "song-of-album";
     }
 
 }

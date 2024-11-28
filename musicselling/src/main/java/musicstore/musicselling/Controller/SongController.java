@@ -59,13 +59,17 @@ public class SongController {
     @Autowired
     private UserRepository userRepository;
 
+    // Create cart for user
     private Cart getOrCreateCart() {
+        // Get the current user details
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+        // Get the current user id
         Long userId = userDetail.getId();
 
         Cart cart = cartRepository.findCartByUserUserId(userId);
 
+        // Check if cart is not exist then create a new one
         if (cart == null) {
             cart = new Cart();
             cart.setUser(userRepository.findByUserId(userId));
@@ -75,6 +79,7 @@ public class SongController {
         return cart;
     }
 
+    // Show all the songs in the song-list page
     @GetMapping("/song-list")
     public String showAllSong(Model model) {
         List<Song> songList = songRepository.findAll();
@@ -84,11 +89,13 @@ public class SongController {
         List<Long> itemId = new ArrayList<>();
         Cart cart = getOrCreateCart();
 
+        // Add the user information to navbar
         if (cart != null) {
             isLoggedIn = true;
             UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
             model.addAttribute("user", user);
 
+            // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
                 if (cartItem.getSong() != null) {
                     itemId.add(cartItem.getSong().getSongId());
@@ -106,21 +113,30 @@ public class SongController {
 
     }
 
+    // Find the song by the search value contains the name of artist or the name of
+    // the song
     @GetMapping("/find")
     public String searchResult(@RequestParam(value = "searchString", required = false) String searchString, Model model,
             HttpServletRequest request) {
+
+        // Find the song by search the artist name
         List<Song> songList = songRepository.findByArtists_ArtistNameContainingIgnoreCase(searchString);
+
+        // Get the genres to show on the navbar
         List<Genre> genreList = genreRepository.findAll();
+        // Create cart
         Cart cart = getOrCreateCart();
+
         List<Long> itemId = new ArrayList<>();
         boolean isLoggedIn = false;
-        String pageDomain = request.getHeader("Referer");
 
+        // Add the user information to navbar
         if (cart != null) {
             isLoggedIn = true;
             UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
             model.addAttribute("user", user);
 
+            // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
                 if (cartItem.getSong() != null) {
                     itemId.add(cartItem.getSong().getSongId());
@@ -129,45 +145,61 @@ public class SongController {
             }
             model.addAttribute("itemId", itemId);
         }
-
+        // if the song list found by artist name is not null then return to the
+        // search-result page with that song list
         if (!songList.isEmpty()) {
-            System.out.println(pageDomain);
+
             model.addAttribute("isLoggedIn", isLoggedIn);
             model.addAttribute("songList", songList);
             model.addAttribute("genreList", genreList);
             return "search-result";
         }
-
+        // find the song by song name
         List<Song> songList2 = songRepository.findBySongNameContaining(searchString);
+        // if the song list found by song name is not empty then return the search
+        // result page with that song list
         if (!songList2.isEmpty()) {
-            System.out.println(pageDomain);
+
             model.addAttribute("isLoggedIn", isLoggedIn);
 
             model.addAttribute("songList", songList2);
             model.addAttribute("genreList", genreList);
             return "search-result";
         }
+
         model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("genreList", genreList);
+
+        // return to the error page if the song list found by 2 methods above is empty
         model.addAttribute("message", "No result.");
         return "error";
 
     }
 
+    // Sort the songs by their genres
     @GetMapping("/song-genre")
     public String songOfGenre(Model model, Long genreId) {
+        // Get genres to add in the navbar
         List<Genre> genreList = genreRepository.findAll();
+
+        // find the genre by the genre id
         Genre genre = genreRepository.findByGenreId(genreId);
+
+        // get songs by genre
         Set<Song> songList = genre.getSongs();
+
         List<Long> itemId = new ArrayList<>();
         boolean isLoggedIn = false;
+        // Create cart
         Cart cart = getOrCreateCart();
 
+        // Add the user information to navbar
         if (cart != null) {
             isLoggedIn = true;
             UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
             model.addAttribute("user", user);
 
+            // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
                 if (cartItem.getSong() != null) {
                     itemId.add(cartItem.getSong().getSongId());
@@ -183,80 +215,26 @@ public class SongController {
         return "song-of-genre";
     }
 
-    @GetMapping("/album")
-    public String showAllAlbum(Model model) {
-        List<Album> albumList = albumRepository.findAll();
-        List<Genre> genreList = genreRepository.findAll();
-        List<Long> itemId = new ArrayList<>();
-        boolean isLoggedIn = false;
-        Cart cart = getOrCreateCart();
-
-        if (cart != null) {
-            isLoggedIn = true;
-            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
-            model.addAttribute("user", user);
-
-            for (CartItem cartItem : cart.getCartItems()) {
-                if (cartItem.getSong() != null) {
-                    itemId.add(cartItem.getSong().getSongId());
-                }
-
-            }
-            model.addAttribute("itemId", itemId);
-        }
-        model.addAttribute("isLoggedIn", isLoggedIn);
-        model.addAttribute("albumList", albumList);
-        model.addAttribute("genreList", genreList);
-        return "album";
-    }
-
-    @GetMapping("/album/songs")
-    public String showAllSongsOfAlbum(Model model, Long albumId) {
-        Album album = albumRepository.findByAlbumId(albumId);
-        List<Song> songList = album.getSongs();
-        List<Genre> genreList = genreRepository.findAll();
-        List<Long> itemId = new ArrayList<>();
-
-        boolean isLoggedIn = false;
-        Cart cart = getOrCreateCart();
-
-        if (cart != null) {
-            isLoggedIn = true;
-            UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
-            model.addAttribute("user", user);
-
-            for (CartItem cartItem : cart.getCartItems()) {
-                if (cartItem.getSong() != null) {
-                    itemId.add(cartItem.getSong().getSongId());
-                }
-
-            }
-            model.addAttribute("itemId", itemId);
-        }
-        model.addAttribute("isLoggedIn", isLoggedIn);
-
-        model.addAttribute("album", album);
-        model.addAttribute("songList", songList);
-        model.addAttribute("genreList", genreList);
-
-        return "song-of-album";
-    }
-
+    // Return user to the page of one song
     @GetMapping("/song-page")
     public String songPage(Model model, Long songId) {
+        // Get genres to add in the navbar
         List<Genre> genreList = genreRepository.findAll();
 
+        // Get the song by its id
         Song song = songRepository.findBySongId(songId);
 
         List<Long> itemId = new ArrayList<>();
         boolean isLoggedIn = false;
         Cart cart = getOrCreateCart();
 
+        // Add the user information to navbar
         if (cart != null) {
             isLoggedIn = true;
             UserEntity user = userRepository.findByUserId(cart.getUser().getUserId());
             model.addAttribute("user", user);
 
+            // Get the item id to check if it's in the cart
             for (CartItem cartItem : cart.getCartItems()) {
                 if (cartItem.getSong() != null) {
                     itemId.add(cartItem.getSong().getSongId());
@@ -265,6 +243,7 @@ public class SongController {
             }
             model.addAttribute("itemId", itemId);
         }
+
         model.addAttribute("isLoggedIn", isLoggedIn);
 
         model.addAttribute("song", song);
