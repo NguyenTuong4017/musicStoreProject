@@ -54,9 +54,9 @@ public class MusicsellingApplication {
 			UserEntity user2 = new UserEntity("admin", encoder.encode("admin"), "ADMIN");
 			UserEntity user3 = new UserEntity("user3", encoder.encode("user3"), "USER");
 			// save user
-			// userRepository.save(user1);
-			// userRepository.save(user2);
-			// userRepository.save(user3);
+			userRepository.save(user1);
+			userRepository.save(user2);
+			userRepository.save(user3);
 
 			// create artists
 			Artist song_tung_mtp = new Artist("Sơn Tùng M-TP", "Vietnamese singer-songwriter and actor.",
@@ -136,9 +136,9 @@ public class MusicsellingApplication {
 			Album ai_album = new Album("ái", "/static/song-image/neu-luc-do.jpg", 12.99f);
 
 			// save genre
-			// genreRepository.save(pop);
-			// genreRepository.save(rnb);
-			// genreRepository.save(hiphopRap);
+			genreRepository.save(pop);
+			genreRepository.save(rnb);
+			genreRepository.save(hiphopRap);
 
 			// add genre to song
 			tinh_yeu_co_nghia_la_gi.addGenres(pop);
@@ -205,33 +205,33 @@ public class MusicsellingApplication {
 			beautiful_nightmare.addGenres(pop);
 
 			// save songs
-			// songRepository.save(tinh_yeu_co_nghia_la_gi);
-			// songRepository.save(nguoi_dep_ngu);
-			// songRepository.save(nguoi_dien);
-			// songRepository.save(kho_bau_danh_roi);
-			// songRepository.save(ai);
-			// songRepository.save(lam_lanh_chua_tinh);
-			// songRepository.save(the_gioi_than_tien);
-			// songRepository.save(nhung_dom_sang);
-			// songRepository.save(nu_sieu_anh_hung);
-			// songRepository.save(ghe_iu_dau_cua_em_oi);
-			// songRepository.save(neu_luc_do);
-			// songRepository.save(ket_thuc_mo_dau);
+			songRepository.save(tinh_yeu_co_nghia_la_gi);
+			songRepository.save(nguoi_dep_ngu);
+			songRepository.save(nguoi_dien);
+			songRepository.save(kho_bau_danh_roi);
+			songRepository.save(ai);
+			songRepository.save(lam_lanh_chua_tinh);
+			songRepository.save(the_gioi_than_tien);
+			songRepository.save(nhung_dom_sang);
+			songRepository.save(nu_sieu_anh_hung);
+			songRepository.save(ghe_iu_dau_cua_em_oi);
+			songRepository.save(neu_luc_do);
+			songRepository.save(ket_thuc_mo_dau);
 
-			// songRepository.save(mong_yu);
-			// songRepository.save(cuoc_goi_luc_nua_dem);
-			// songRepository.save(beautiful_nightmare);
-			// songRepository.save(mien_mong_mi);
-			// songRepository.save(hai_nghin_cau_hoi_vi_sao);
+			songRepository.save(mong_yu);
+			songRepository.save(cuoc_goi_luc_nua_dem);
+			songRepository.save(beautiful_nightmare);
+			songRepository.save(mien_mong_mi);
+			songRepository.save(hai_nghin_cau_hoi_vi_sao);
 
-			// songRepository.save(chay_ngay_di);
-			// songRepository.save(hay_trao_cho_anh);
+			songRepository.save(chay_ngay_di);
+			songRepository.save(hay_trao_cho_anh);
 
-			// songRepository.save(chi_mot_dem_nua_thoi);
-			// songRepository.save(em_la_chau_bau);
+			songRepository.save(chi_mot_dem_nua_thoi);
+			songRepository.save(em_la_chau_bau);
 
-			// songRepository.save(nhac_anh);
-			// songRepository.save(em_iu);
+			songRepository.save(nhac_anh);
+			songRepository.save(em_iu);
 
 			// add songs to album
 			mongMee.addSong(mong_yu);
@@ -297,52 +297,52 @@ public class MusicsellingApplication {
 			wokeup.addSong(ghe_iu_dau_cua_em_oi);
 
 			// save artist
-			// artistRepository.save(song_tung_mtp);
-			// artistRepository.save(tlinh);
-			// artistRepository.save(rpt_mck);
-			// artistRepository.save(wxrdie);
-			// artistRepository.save(andree_right_hand);
-			// artistRepository.save(amee);
-			// artistRepository.save(binh_gold);
-			// artistRepository.save(two_pillz);
-			// artistRepository.save(wokeup);
+			artistRepository.save(song_tung_mtp);
+			artistRepository.save(tlinh);
+			artistRepository.save(rpt_mck);
+			artistRepository.save(wxrdie);
+			artistRepository.save(andree_right_hand);
+			artistRepository.save(amee);
+			artistRepository.save(binh_gold);
+			artistRepository.save(two_pillz);
+			artistRepository.save(wokeup);
 
 			// add albums to artist
 			amee.addAlbum(mongMee);
 			tlinh.addAlbum(ai_album);
 
 			// save album
-			// albumRepository.save(mongMee);
-			// albumRepository.save(ai_album);
+			albumRepository.save(mongMee);
+			albumRepository.save(ai_album);
 
 			// save songs again to link with album
-			// songRepository.save(tinh_yeu_co_nghia_la_gi);
-			// songRepository.save(nguoi_dep_ngu);
-			// songRepository.save(nguoi_dien);
-			// songRepository.save(kho_bau_danh_roi);
-			// songRepository.save(ai);
-			// songRepository.save(lam_lanh_chua_tinh);
-			// songRepository.save(the_gioi_than_tien);
-			// songRepository.save(nhung_dom_sang);
-			// songRepository.save(nu_sieu_anh_hung);
-			// songRepository.save(ghe_iu_dau_cua_em_oi);
-			// songRepository.save(neu_luc_do);
-			// songRepository.save(ket_thuc_mo_dau);
+			songRepository.save(tinh_yeu_co_nghia_la_gi);
+			songRepository.save(nguoi_dep_ngu);
+			songRepository.save(nguoi_dien);
+			songRepository.save(kho_bau_danh_roi);
+			songRepository.save(ai);
+			songRepository.save(lam_lanh_chua_tinh);
+			songRepository.save(the_gioi_than_tien);
+			songRepository.save(nhung_dom_sang);
+			songRepository.save(nu_sieu_anh_hung);
+			songRepository.save(ghe_iu_dau_cua_em_oi);
+			songRepository.save(neu_luc_do);
+			songRepository.save(ket_thuc_mo_dau);
 
-			// songRepository.save(mong_yu);
-			// songRepository.save(cuoc_goi_luc_nua_dem);
-			// songRepository.save(beautiful_nightmare);
-			// songRepository.save(mien_mong_mi);
-			// songRepository.save(hai_nghin_cau_hoi_vi_sao);
+			songRepository.save(mong_yu);
+			songRepository.save(cuoc_goi_luc_nua_dem);
+			songRepository.save(beautiful_nightmare);
+			songRepository.save(mien_mong_mi);
+			songRepository.save(hai_nghin_cau_hoi_vi_sao);
 
-			// songRepository.save(chay_ngay_di);
-			// songRepository.save(hay_trao_cho_anh);
+			songRepository.save(chay_ngay_di);
+			songRepository.save(hay_trao_cho_anh);
 
-			// songRepository.save(chi_mot_dem_nua_thoi);
-			// songRepository.save(em_la_chau_bau);
+			songRepository.save(chi_mot_dem_nua_thoi);
+			songRepository.save(em_la_chau_bau);
 
-			// songRepository.save(nhac_anh);
-			// songRepository.save(em_iu);
+			songRepository.save(nhac_anh);
+			songRepository.save(em_iu);
 
 		};
 	}
