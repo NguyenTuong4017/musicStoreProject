@@ -123,7 +123,7 @@
                 <!-- Loop through each genre in genreList -->
                 <li th:each="genre: ${genreList}">
                   <form style="display: inline" th:action="@{/song-genre}">
-                    <!-- Hidden input to pass the genre ID -->
+                    <!-- Hidden input to pass genreId -->
                     <input
                       type="hidden"
                       name="genreId"
@@ -148,10 +148,6 @@
                   </form>
                 </li>
               </ul>
-            </li>
-            <!-- Disabled navigation item -->
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
 
@@ -273,7 +269,7 @@
                 "
                 th:if="${isLoggedIn == true}"
               >
-                <!-- User icon SVG -->
+                <!-- Larger user icon SVG -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="35"
@@ -294,7 +290,7 @@
                 aria-labelledby="userDropdown"
               >
                 <li>
-                  <!-- Display the username -->
+                  <!-- Display signed-in username -->
                   <span class="dropdown-item-text">
                     Signed in as <strong th:text="${user.Username}"></strong>
                   </span>

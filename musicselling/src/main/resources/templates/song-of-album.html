@@ -135,10 +135,6 @@
                 </li>
               </ul>
             </li>
-            <!-- Disabled navigation item -->
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
           </ul>
 
           <!-- Centered search bar -->
@@ -330,10 +326,27 @@
               Price:
               <strong th:text="${album.formatPrice(album.albumPrice)}"></strong>
             </p>
-            <!-- Add to Cart Button -->
-            <div class="mt-4">
-              <button class="btn btn-primary">Add to Cart</button>
-            </div>
+            <!-- Add to Cart or Go to Cart Button -->
+            <form style="display: inline" th:action="@{/add-album-to-cart}">
+              <!-- Hidden input with albumId -->
+              <input type="hidden" name="albumId" th:value="${album.albumId}" />
+              <!-- Show 'Add to cart' button if album is not in cart -->
+              <button
+                type="submit"
+                class="btn btn-primary"
+                th:if="${!itemId.contains(album.albumId)}"
+              >
+                Add to cart
+              </button>
+              <!-- Show 'Go to cart' link if album is already in cart -->
+              <a
+                th:href="@{/cart}"
+                class="btn btn-success"
+                th:if="${itemId.contains(album.albumId)}"
+              >
+                Go to cart
+              </a>
+            </form>
           </div>
         </div>
 

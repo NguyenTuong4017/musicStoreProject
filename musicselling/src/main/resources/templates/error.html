@@ -66,7 +66,7 @@
       data-bs-theme="dark"
     >
       <div class="container-fluid">
-        <!-- Logo -->
+        <!-- Logo linking to the song list page -->
         <a class="navbar-brand" th:href="@{/song-list}">
           <img src="/static/logo.png" alt="Logo" width="70" height="70" />
         </a>
@@ -88,7 +88,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left-aligned navigation links -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <!-- Nav items -->
+            <!-- Navigation items -->
             <li class="nav-item">
               <a class="nav-link" aria-current="page" th:href="@{/song-list}"
                 >Songs</a
@@ -102,6 +102,7 @@
             <li class="nav-item">
               <a class="nav-link" th:href="@{/album}">Album/EP</a>
             </li>
+            <!-- Genres dropdown menu -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -113,13 +114,16 @@
                 Genres
               </a>
               <ul class="dropdown-menu">
+                <!-- Loop through each genre in genreList -->
                 <li th:each="genre: ${genreList}">
                   <form style="display: inline" th:action="@{/song-genre}">
+                    <!-- Hidden input to pass genreId -->
                     <input
                       type="hidden"
                       name="genreId"
                       th:value="${genre.genreId}"
                     />
+                    <!-- Button styled as a dropdown item -->
                     <button
                       type="submit"
                       class="dropdown-item"
@@ -132,14 +136,12 @@
                         cursor: pointer;
                       "
                     >
+                      <!-- Display genre name -->
                       <span th:text="${genre.genreName}"></span>
                     </button>
                   </form>
                 </li>
               </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
 
@@ -151,6 +153,7 @@
             method="get"
             style="max-width: 30%"
           >
+            <!-- Search input field -->
             <input
               class="form-control me-2 flex-grow-1"
               type="search"
@@ -159,8 +162,9 @@
               name="searchString"
               th:value="${searchString}"
             />
+            <!-- Search button with icon -->
             <button class="btn btn-outline-primary" type="submit">
-              <!-- Search icon -->
+              <!-- Search icon SVG -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -192,6 +196,7 @@
                     cursor: pointer;
                   "
                 >
+                  <!-- Cart icon SVG -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="35"
@@ -208,7 +213,7 @@
               </form>
             </div>
 
-            <!-- User icon -->
+            <!-- User icon and dropdown -->
             <div class="svg-container dropdown">
               <!-- When not logged in -->
               <button
@@ -225,6 +230,7 @@
                 data-bs-target="#loginModal"
                 th:if="${isLoggedIn == false}"
               >
+                <!-- User icon SVG -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -257,6 +263,7 @@
                 "
                 th:if="${isLoggedIn == true}"
               >
+                <!-- Larger user icon SVG -->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="35"
@@ -277,6 +284,7 @@
                 aria-labelledby="userDropdown"
               >
                 <li>
+                  <!-- Display signed-in username -->
                   <span class="dropdown-item-text">
                     Signed in as <strong th:text="${user.Username}"></strong>
                   </span>
@@ -286,6 +294,7 @@
                 </li>
 
                 <li>
+                  <!-- Logout form -->
                   <form th:action="@{/logout}" method="post">
                     <button class="dropdown-item">Logout</button>
                   </form>
@@ -297,7 +306,7 @@
       </div>
     </nav>
     <!--Show the bugs-->
-    <div class="container text-center">
+    <div class="container text-center content">
       <h3 th:text="${message}"></h3>
       <i class="bi bi-bug"></i>
     </div>
