@@ -166,6 +166,6 @@ public class Song {
     public String genreList() {
         return this.genres.stream()
                 .map(genre -> genre.getGenreName())
-                .collect(Collectors.joining(" ,"));
+                .collect(Collectors.joining(", "));
     }
 }
